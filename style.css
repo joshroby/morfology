@@ -1,0 +1,26 @@
+#svgDiv {
+	width: 30vw;
+	height: 50vh;
+	margin-right: 10vw;
+	float: left;
+}
+
+#svgDiv svg {
+	border: 1px solid red;
+}
+
+#controlsWrapper {
+	height: 90%;
+	width: 40%;
+	overflow-y: auto;
+	float:left;
+}
+
+.controlsDiv {
+}
+
+div:after {
+	content: "";
+	display: none;
+	clear: both;
+}
