@@ -334,6 +334,10 @@ function MorfologyBody(id,sex,roundness,softness) {
 	};
 	
 	this.adoptPose = function(pose) {
+		if (pose == undefined) {
+			console.log(this.id,pose);
+			console.trace()
+		};
 		if (typeof pose == 'string') {
 			var library = {
 				hello: {lean:0,"eyePositionX":-0.471238898038469,"eyePositionY":-0.06458649531074478,"farEyeInnerLid":-1.41371669411541,"farEyeOuterLid":-1.36135681655558,"farEyeLowerLid":-1.5707963267949,"farEyebrowArch":-0.279252680319093,"farFootPoint":1.11701072127637,"farForearmLift":-2.75762021815104,"farHandCurl":0,"farHandSplay":2.14675497995303,"farHandTilt":3.12413936106985,"farHandTurn":-3.14159265358979,"farKneeBend":0,"farThighLift":0.349065850398866,"farUpperArmLift":1.18682389135614,"headNod":-0.010291833989164266,"headSlide":-0.24405169224369802,"headTip":0,"hipsCant":0,"mouthOpen":-0.820304748437335,"mouthPurse":1.5707963267949,"mouthSmile":3.12413936106985,"mouthGrimace":1.76278254451427,"mouthSmirk":-0.11785831040371379,"nearEyeInnerLid":-1.18682389135614,"nearEyeOuterLid":-1.85004900711399,"nearEyeLowerLid":-1.79768912955416,"nearEyebrowArch":-3.14159265358979,"nearFootPoint":0.698131700797732,"nearForearmLift":0.523598775598299,"nearHandCurl":0,"nearHandSplay":1.37881010907552,"nearHandTilt":1.08210413623648,"nearHandTurn":3.12413936106985,"nearKneeBend":-0.0035190247333446775,"nearThighLift":-0.314159265358979,"nearUpperArmLift":-0.994837673636768,"phallusErection":0,"shouldersTip":0},
@@ -358,7 +362,7 @@ function MorfologyBody(id,sex,roundness,softness) {
 		};
 	};
 	this.adoptPose('random');
-	this.adoptPose('searching');
+	this.adoptPose('hello');
 	
 	this.jiggle = function(iterations) {
 		if (iterations == undefined) {iterations = 10};
@@ -2648,6 +2652,7 @@ function MorfologyBody(id,sex,roundness,softness) {
 					y: Math.max(farCollarboneStart.y+torsoHeight*0.01,curveCenter.y-breastSize),
 				};
 				areolaCenter.x = curveCenter.x-breastSize*0.1;
+				areolaCenter.y += farBreastCenter.y-nearBreastCenter.y;
 				
 // 				var breastEllipse = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
 // 				sketchGroup.appendChild(breastEllipse);
@@ -2745,6 +2750,7 @@ function MorfologyBody(id,sex,roundness,softness) {
 					y: Math.max(nearCollarboneStart.y+torsoHeight*0.01,curveCenter.y-breastSize),
 				};
 				areolaCenter.x = curveCenter.x+breastSize*0.1;
+				areolaCenter.y += nearBreastCenter.y-farBreastCenter.y;
 				
 // 				var breastEllipse = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
 // 				sketchGroup.appendChild(breastEllipse);
