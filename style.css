@@ -1,17 +1,17 @@
 #svgDiv {
-	width: 30vw;
+	width: 35vw;
 	height: 50vh;
-	margin-right: 10vw;
+	margin-right: 5vw;
 	float: left;
 }
 
 #svgDiv svg {
-	border: 1px solid red;
+	width: 100%;
 }
 
 #controlsWrapper {
 	height: 90%;
-	width: 40%;
+	width: 30vw;
 	overflow-y: auto;
 	float:left;
 }
@@ -23,4 +23,36 @@ div:after {
 	content: "";
 	display: none;
 	clear: both;
+}
+
+#premiseDiv {
+	font-size: 0.8em;
+}
+
+#controlsWrapper h3 {
+	background-color: slategrey;
+	padding: 0.5vh;
+}
+
+#controlsWrapper span {
+	background-color: slategrey;
+	padding: 0.5vh;
+}
+
+#todoDiv {
+	float: left;
+	margin-left: 3vw;
+	width: 20vw;
+}
+
+.sliderSpan {
+	display: inline;
+	background-image: url(sliderBacking.svg);
+	background-size: cover;
+	width: 50%;
+	margin-right: 3%;
+}
+
+.sliderLabel {
+	display: inline;
 }
