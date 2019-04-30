@@ -2282,6 +2282,14 @@ function MorfologyBody(id,sex,roundness,softness) {
 		var areolaCenter,nippleCenter;
 		var breastProjection = 0.8+this.bio('breastProject')*0.2;
 		var breastAngle = this.bio('pectorals')*40;
+		
+		var nipplesShowing = true;
+		for (var garment of this.garments) {
+			if (garment.absoluteTop < 0.32 && garment.absoluteBottom > 0.34) {
+				nipplesShowing = false;
+			};
+		};
+		
 		for (var b=0;b<breastRows;b++) {
 		
 			var farBreast = document.createElementNS('http://www.w3.org/2000/svg','g');
@@ -2448,64 +2456,66 @@ function MorfologyBody(id,sex,roundness,softness) {
 				areolaCircle.setAttribute('stroke','none');
 				areolaCircle.setAttribute('clip-path','url(#farBreast'+b+'ClipPath_'+this.id+")");
 				
-				var nippleBaseAngle = -1*breastAngle+90;
-				var nippleTipAngle = Math.min(85,nippleBaseAngle+this.bio('nippleLength')*3);
+				if (nipplesShowing) {
+					var nippleBaseAngle = -1*breastAngle+90;
+					var nippleTipAngle = Math.min(85,nippleBaseAngle+this.bio('nippleLength')*3);
 
-				var nippleBaseTop = {
-					x: areolaCenter.x + Math.sin(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
-					y: areolaCenter.y - Math.cos(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
-				};
-				var nippleBaseBottom = {
-					x: areolaCenter.x - Math.sin(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
-					y: areolaCenter.y + Math.cos(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
-				};
-				var nippleTipTop = {
-					x: areolaCenter.x + Math.sin((90+nippleTipAngle)/(180/Math.PI))*nippleLength + Math.sin((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
-					y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength - Math.cos((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
-				};
-				var nippleTipBottom = {
-					x: areolaCenter.x + Math.sin((90+nippleTipAngle)/(180/Math.PI))*nippleLength - Math.sin((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
-					y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength + Math.cos((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
-				};
-				var nipplePath = document.createElementNS('http://www.w3.org/2000/svg','path');
-				farBreast.appendChild(nipplePath);
-				nipplePath.setAttribute('fill',areolaeTone);
-				nipplePath.setAttribute('stroke-linejoin','round');
-				nipplePath.setAttribute('stroke-linecap','round');
-				nipplePath.setAttribute('stroke-width',1.5);
-				var d = 'M '+nippleBaseTop.x+','+nippleBaseTop.y+' ';
-				d += 'C '+(nippleBaseTop.x+Math.sin((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+','+(nippleBaseTop.y - Math.cos((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+' '+(nippleTipTop.x)+','+(nippleTipTop.y)+' '+nippleTipTop.x+','+nippleTipTop.y+' ';
-				d += 'L '+nippleTipBottom.x+','+nippleTipBottom.y+' ';
-				d += 'C '+nippleTipBottom.x+','+nippleTipBottom.y+' '+(nippleBaseBottom.x+Math.sin((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+','+(nippleBaseBottom.y - Math.cos((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+' '+nippleBaseBottom.x+','+nippleBaseBottom.y+' ';
-				nipplePath.setAttribute('d',d);
+					var nippleBaseTop = {
+						x: areolaCenter.x + Math.sin(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
+						y: areolaCenter.y - Math.cos(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
+					};
+					var nippleBaseBottom = {
+						x: areolaCenter.x - Math.sin(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
+						y: areolaCenter.y + Math.cos(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
+					};
+					var nippleTipTop = {
+						x: areolaCenter.x + Math.sin((90+nippleTipAngle)/(180/Math.PI))*nippleLength + Math.sin((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
+						y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength - Math.cos((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
+					};
+					var nippleTipBottom = {
+						x: areolaCenter.x + Math.sin((90+nippleTipAngle)/(180/Math.PI))*nippleLength - Math.sin((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
+						y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength + Math.cos((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
+					};
+					var nipplePath = document.createElementNS('http://www.w3.org/2000/svg','path');
+					farBreast.appendChild(nipplePath);
+					nipplePath.setAttribute('fill',areolaeTone);
+					nipplePath.setAttribute('stroke-linejoin','round');
+					nipplePath.setAttribute('stroke-linecap','round');
+					nipplePath.setAttribute('stroke-width',1.5);
+					var d = 'M '+nippleBaseTop.x+','+nippleBaseTop.y+' ';
+					d += 'C '+(nippleBaseTop.x+Math.sin((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+','+(nippleBaseTop.y - Math.cos((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+' '+(nippleTipTop.x)+','+(nippleTipTop.y)+' '+nippleTipTop.x+','+nippleTipTop.y+' ';
+					d += 'L '+nippleTipBottom.x+','+nippleTipBottom.y+' ';
+					d += 'C '+nippleTipBottom.x+','+nippleTipBottom.y+' '+(nippleBaseBottom.x+Math.sin((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+','+(nippleBaseBottom.y - Math.cos((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+' '+nippleBaseBottom.x+','+nippleBaseBottom.y+' ';
+					nipplePath.setAttribute('d',d);
 				
-				var nippleGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
-				farBreast.appendChild(nippleGroup);
-				nippleGroup.setAttribute('transform','rotate('+nippleTipAngle+' '+areolaCenter.x+' '+areolaCenter.y+')');
+					var nippleGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
+					farBreast.appendChild(nippleGroup);
+					nippleGroup.setAttribute('transform','rotate('+nippleTipAngle+' '+areolaCenter.x+' '+areolaCenter.y+')');
 				
-				var nippleTip = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-				nippleGroup.appendChild(nippleTip);
-				nippleTip.setAttribute('fill',areolaeTone);
-				nippleTip.setAttribute('cx',areolaCenter.x+nippleLength);
-				nippleTip.setAttribute('cy',areolaCenter.y);
-				nippleTip.setAttribute('rx',nippleWidth*0.35);
-				nippleTip.setAttribute('ry',nippleWidth*0.5);
+					var nippleTip = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+					nippleGroup.appendChild(nippleTip);
+					nippleTip.setAttribute('fill',areolaeTone);
+					nippleTip.setAttribute('cx',areolaCenter.x+nippleLength);
+					nippleTip.setAttribute('cy',areolaCenter.y);
+					nippleTip.setAttribute('rx',nippleWidth*0.35);
+					nippleTip.setAttribute('ry',nippleWidth*0.5);
 
-				if (this.biometrics.nippleLength>0) {
-					nipplePath.setAttribute('stroke','black');
-					nippleTip.setAttribute('stroke','black');
-				};
+					if (this.biometrics.nippleLength>0) {
+						nipplePath.setAttribute('stroke','black');
+						nippleTip.setAttribute('stroke','black');
+					};
 				
-				if (this.biometrics.nippleWidth>2) {
-					var nippleDuct = document.createElementNS('http://www.w3.org/2000/svg','path');
-					nippleGroup.appendChild(nippleDuct);
-					nippleDuct.setAttribute('fill','none');
-					nippleDuct.setAttribute('stroke','black');
-					nippleDuct.setAttribute('stroke-linecap','round');
-					var d = 'M '+(areolaCenter.x+nippleLength)+','+(areolaCenter.y+nippleWidth*0.2)+' ';
-					d += 'Q '+(areolaCenter.x+nippleLength-nippleWidth*0.15)+','+areolaCenter.y+' '+(areolaCenter.x+nippleLength)+','+(areolaCenter.y-nippleWidth*0.2)+' ';
-					nippleDuct.setAttribute('d',d);
-				};				
+					if (this.biometrics.nippleWidth>2) {
+						var nippleDuct = document.createElementNS('http://www.w3.org/2000/svg','path');
+						nippleGroup.appendChild(nippleDuct);
+						nippleDuct.setAttribute('fill','none');
+						nippleDuct.setAttribute('stroke','black');
+						nippleDuct.setAttribute('stroke-linecap','round');
+						var d = 'M '+(areolaCenter.x+nippleLength)+','+(areolaCenter.y+nippleWidth*0.2)+' ';
+						d += 'Q '+(areolaCenter.x+nippleLength-nippleWidth*0.15)+','+areolaCenter.y+' '+(areolaCenter.x+nippleLength)+','+(areolaCenter.y-nippleWidth*0.2)+' ';
+						nippleDuct.setAttribute('d',d);
+					};
+				};			
 				
 			} else { // near projecting breast
 				curveCenter = {
@@ -2564,64 +2574,66 @@ function MorfologyBody(id,sex,roundness,softness) {
 				areolaCircle.setAttribute('stroke','none');
 				areolaCircle.setAttribute('clip-path','url(#nearBreast'+b+'ClipPath_'+this.id+")");
 				
-				var nippleBaseAngle = breastAngle-90;
-				var nippleTipAngle = Math.max(-85,nippleBaseAngle+this.bio('nippleLength')*-3);
+				if (nipplesShowing) {
+					var nippleBaseAngle = breastAngle-90;
+					var nippleTipAngle = Math.max(-85,nippleBaseAngle+this.bio('nippleLength')*-3);
 
-				var nippleBaseTop = {
-					x: areolaCenter.x + Math.sin(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
-					y: areolaCenter.y - Math.cos(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
-				};
-				var nippleBaseBottom = {
-					x: areolaCenter.x - Math.sin(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
-					y: areolaCenter.y + Math.cos(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
-				};
-				var nippleTipTop = {
-					x: areolaCenter.x + Math.sin((90+nippleTipAngle)/(180/Math.PI))*nippleLength + Math.sin((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
-					y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength - Math.cos((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
-				};
-				var nippleTipBottom = {
-					x: areolaCenter.x + Math.sin((90+nippleTipAngle)/(180/Math.PI))*nippleLength - Math.sin((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
-					y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength + Math.cos((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
-				};
-				var nipplePath = document.createElementNS('http://www.w3.org/2000/svg','path');
-				nearBreast.appendChild(nipplePath);
-				nipplePath.setAttribute('fill',areolaeTone);
-				nipplePath.setAttribute('stroke-linejoin','round');
-				nipplePath.setAttribute('stroke-linecap','round');
-				nipplePath.setAttribute('stroke-width',1.5);
-				var d = 'M '+nippleBaseTop.x+','+nippleBaseTop.y+' ';
-				d += 'C '+(nippleBaseTop.x+Math.sin((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+','+(nippleBaseTop.y - Math.cos((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+' '+(nippleTipTop.x)+','+(nippleTipTop.y)+' '+nippleTipTop.x+','+nippleTipTop.y+' ';
-				d += 'L '+nippleTipBottom.x+','+nippleTipBottom.y+' ';
-				d += 'C '+nippleTipBottom.x+','+nippleTipBottom.y+' '+(nippleBaseBottom.x+Math.sin((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+','+(nippleBaseBottom.y - Math.cos((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+' '+nippleBaseBottom.x+','+nippleBaseBottom.y+' ';
-				nipplePath.setAttribute('d',d);
+					var nippleBaseTop = {
+						x: areolaCenter.x + Math.sin(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
+						y: areolaCenter.y - Math.cos(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
+					};
+					var nippleBaseBottom = {
+						x: areolaCenter.x - Math.sin(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
+						y: areolaCenter.y + Math.cos(nippleBaseAngle/(180/Math.PI))*nippleWidth*0.5,
+					};
+					var nippleTipTop = {
+						x: areolaCenter.x + Math.sin((90+nippleTipAngle)/(180/Math.PI))*nippleLength + Math.sin((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
+						y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength - Math.cos((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
+					};
+					var nippleTipBottom = {
+						x: areolaCenter.x + Math.sin((90+nippleTipAngle)/(180/Math.PI))*nippleLength - Math.sin((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
+						y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength + Math.cos((nippleTipAngle)/(180/Math.PI))*nippleWidth*0.5,
+					};
+					var nipplePath = document.createElementNS('http://www.w3.org/2000/svg','path');
+					nearBreast.appendChild(nipplePath);
+					nipplePath.setAttribute('fill',areolaeTone);
+					nipplePath.setAttribute('stroke-linejoin','round');
+					nipplePath.setAttribute('stroke-linecap','round');
+					nipplePath.setAttribute('stroke-width',1.5);
+					var d = 'M '+nippleBaseTop.x+','+nippleBaseTop.y+' ';
+					d += 'C '+(nippleBaseTop.x+Math.sin((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+','+(nippleBaseTop.y - Math.cos((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+' '+(nippleTipTop.x)+','+(nippleTipTop.y)+' '+nippleTipTop.x+','+nippleTipTop.y+' ';
+					d += 'L '+nippleTipBottom.x+','+nippleTipBottom.y+' ';
+					d += 'C '+nippleTipBottom.x+','+nippleTipBottom.y+' '+(nippleBaseBottom.x+Math.sin((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+','+(nippleBaseBottom.y - Math.cos((nippleBaseAngle+90)/(180/Math.PI))*nippleLength*0.25)+' '+nippleBaseBottom.x+','+nippleBaseBottom.y+' ';
+					nipplePath.setAttribute('d',d);
 				
-				var nippleGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
-				nearBreast.appendChild(nippleGroup);
-				nippleGroup.setAttribute('transform','rotate('+nippleTipAngle+' '+areolaCenter.x+' '+areolaCenter.y+')');
+					var nippleGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
+					nearBreast.appendChild(nippleGroup);
+					nippleGroup.setAttribute('transform','rotate('+nippleTipAngle+' '+areolaCenter.x+' '+areolaCenter.y+')');
 				
-				var nippleTip = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-				nippleGroup.appendChild(nippleTip);
-				nippleTip.setAttribute('fill',areolaeTone);
-				nippleTip.setAttribute('cx',areolaCenter.x+nippleLength);
-				nippleTip.setAttribute('cy',areolaCenter.y);
-				nippleTip.setAttribute('rx',nippleWidth*0.35);
-				nippleTip.setAttribute('ry',nippleWidth*0.5);
+					var nippleTip = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+					nippleGroup.appendChild(nippleTip);
+					nippleTip.setAttribute('fill',areolaeTone);
+					nippleTip.setAttribute('cx',areolaCenter.x+nippleLength);
+					nippleTip.setAttribute('cy',areolaCenter.y);
+					nippleTip.setAttribute('rx',nippleWidth*0.35);
+					nippleTip.setAttribute('ry',nippleWidth*0.5);
 
-				if (this.biometrics.nippleLength>0) {
-					nipplePath.setAttribute('stroke','black');
-					nippleTip.setAttribute('stroke','black');
-				};
+					if (this.biometrics.nippleLength>0) {
+						nipplePath.setAttribute('stroke','black');
+						nippleTip.setAttribute('stroke','black');
+					};
 				
-				if (this.biometrics.nippleWidth>2) {
-					var nippleDuct = document.createElementNS('http://www.w3.org/2000/svg','path');
-					nippleGroup.appendChild(nippleDuct);
-					nippleDuct.setAttribute('fill','none');
-					nippleDuct.setAttribute('stroke','black');
-					nippleDuct.setAttribute('stroke-linecap','round');
-					var d = 'M '+(areolaCenter.x+nippleLength)+','+(areolaCenter.y+nippleWidth*0.2)+' ';
-					d += 'Q '+(areolaCenter.x+nippleLength-nippleWidth*0.15)+','+areolaCenter.y+' '+(areolaCenter.x+nippleLength)+','+(areolaCenter.y-nippleWidth*0.2)+' ';
-					nippleDuct.setAttribute('d',d);
-				};				
+					if (this.biometrics.nippleWidth>2) {
+						var nippleDuct = document.createElementNS('http://www.w3.org/2000/svg','path');
+						nippleGroup.appendChild(nippleDuct);
+						nippleDuct.setAttribute('fill','none');
+						nippleDuct.setAttribute('stroke','black');
+						nippleDuct.setAttribute('stroke-linecap','round');
+						var d = 'M '+(areolaCenter.x+nippleLength)+','+(areolaCenter.y+nippleWidth*0.2)+' ';
+						d += 'Q '+(areolaCenter.x+nippleLength-nippleWidth*0.15)+','+areolaCenter.y+' '+(areolaCenter.x+nippleLength)+','+(areolaCenter.y-nippleWidth*0.2)+' ';
+						nippleDuct.setAttribute('d',d);
+					};
+				};			
 			};
 
 			// Round Breast
@@ -2678,47 +2690,49 @@ function MorfologyBody(id,sex,roundness,softness) {
 				areolaCircle.setAttribute('stroke','none');
 				areolaCircle.setAttribute('clip-path','url(#farBreast'+b+'ClipPath_'+this.id+")");
 
-				var nippleTipCenter = {
-					x: areolaCenter.x,
-					y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength,
-				};
+				if (nipplesShowing) {
+					var nippleTipCenter = {
+						x: areolaCenter.x,
+						y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength,
+					};
 
-				var nipplePath = document.createElementNS('http://www.w3.org/2000/svg','path');
-				farBreast.appendChild(nipplePath);
-				var fnl = nippleLength * Math.cos(breastAngle/180*Math.PI);
-				nipplePath.setAttribute('fill',areolaeTone);
-				d = 'M '+(areolaCenter.x+nippleWidth/2)+','+(areolaCenter.y)+' ';
-				d += 'L '+(nippleTipCenter.x+nippleWidth*0.5)+','+(nippleTipCenter.y)+' ';
-				d += 'L '+(nippleTipCenter.x-nippleWidth*0.5)+','+(nippleTipCenter.y)+' ';
-				d += 'L '+(areolaCenter.x-nippleWidth/2)+','+(areolaCenter.y)+' ';
-				nipplePath.setAttribute('d',d);
+					var nipplePath = document.createElementNS('http://www.w3.org/2000/svg','path');
+					farBreast.appendChild(nipplePath);
+					var fnl = nippleLength * Math.cos(breastAngle/180*Math.PI);
+					nipplePath.setAttribute('fill',areolaeTone);
+					d = 'M '+(areolaCenter.x+nippleWidth/2)+','+(areolaCenter.y)+' ';
+					d += 'L '+(nippleTipCenter.x+nippleWidth*0.5)+','+(nippleTipCenter.y)+' ';
+					d += 'L '+(nippleTipCenter.x-nippleWidth*0.5)+','+(nippleTipCenter.y)+' ';
+					d += 'L '+(areolaCenter.x-nippleWidth/2)+','+(areolaCenter.y)+' ';
+					nipplePath.setAttribute('d',d);
 
-				var nippleGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
-				farBreast.appendChild(nippleGroup);
+					var nippleGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
+					farBreast.appendChild(nippleGroup);
 
-				var nippleTip = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-				nippleGroup.appendChild(nippleTip);
-				nippleTip.setAttribute('fill',areolaeTone);
-				nippleTip.setAttribute('cx',nippleTipCenter.x);
-				nippleTip.setAttribute('cy',nippleTipCenter.y);
-				nippleTip.setAttribute('rx',nippleWidth*0.5);
-				nippleTip.setAttribute('ry',nippleWidth*0.45);
+					var nippleTip = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+					nippleGroup.appendChild(nippleTip);
+					nippleTip.setAttribute('fill',areolaeTone);
+					nippleTip.setAttribute('cx',nippleTipCenter.x);
+					nippleTip.setAttribute('cy',nippleTipCenter.y);
+					nippleTip.setAttribute('rx',nippleWidth*0.5);
+					nippleTip.setAttribute('ry',nippleWidth*0.45);
 				
-				if (this.biometrics.nippleLength>0) {
-					nipplePath.setAttribute('stroke','black');
-					nippleTip.setAttribute('stroke','black');
-				};
+					if (this.biometrics.nippleLength>0) {
+						nipplePath.setAttribute('stroke','black');
+						nippleTip.setAttribute('stroke','black');
+					};
 
-				if (this.biometrics.nippleWidth>2) {
-					var nippleDuct = document.createElementNS('http://www.w3.org/2000/svg','path');
-					nippleGroup.appendChild(nippleDuct);
-					nippleDuct.setAttribute('fill','none');
-					nippleDuct.setAttribute('stroke','black');
-					nippleDuct.setAttribute('stroke-linecap','round');
-					var d = 'M '+(nippleTipCenter.x)+','+(nippleTipCenter.y+nippleWidth*0.2)+' ';
-					d += 'Q '+(nippleTipCenter.x-nippleWidth*0.15)+','+nippleTipCenter.y+' '+nippleTipCenter.x+','+(nippleTipCenter.y-nippleWidth*0.2)+' ';
-					nippleDuct.setAttribute('d',d);
-					nippleDuct.setAttribute('transform','rotate(90 '+nippleTipCenter.x+' '+nippleTipCenter.y+')');
+					if (this.biometrics.nippleWidth>2) {
+						var nippleDuct = document.createElementNS('http://www.w3.org/2000/svg','path');
+						nippleGroup.appendChild(nippleDuct);
+						nippleDuct.setAttribute('fill','none');
+						nippleDuct.setAttribute('stroke','black');
+						nippleDuct.setAttribute('stroke-linecap','round');
+						var d = 'M '+(nippleTipCenter.x)+','+(nippleTipCenter.y+nippleWidth*0.2)+' ';
+						d += 'Q '+(nippleTipCenter.x-nippleWidth*0.15)+','+nippleTipCenter.y+' '+nippleTipCenter.x+','+(nippleTipCenter.y-nippleWidth*0.2)+' ';
+						nippleDuct.setAttribute('d',d);
+						nippleDuct.setAttribute('transform','rotate(90 '+nippleTipCenter.x+' '+nippleTipCenter.y+')');
+					};
 				};
 			} else {
 				// near round breast
@@ -2773,47 +2787,49 @@ function MorfologyBody(id,sex,roundness,softness) {
 				areolaCircle.setAttribute('stroke','none');
 				areolaCircle.setAttribute('clip-path','url(#nearBreast'+b+'ClipPath_'+this.id+")");
 
-				var nippleTipCenter = {
-					x: areolaCenter.x,
-					y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength,
-				};
+				if (nipplesShowing) {
+					var nippleTipCenter = {
+						x: areolaCenter.x,
+						y: areolaCenter.y - Math.cos((90+nippleTipAngle)/(180/Math.PI))*nippleLength,
+					};
 
-				var nipplePath = document.createElementNS('http://www.w3.org/2000/svg','path');
-				nearBreast.appendChild(nipplePath);
-				var fnl = nippleLength * Math.cos(breastAngle/180*Math.PI);
-				nipplePath.setAttribute('fill',areolaeTone);
-				d = 'M '+(areolaCenter.x+nippleWidth/2)+','+(areolaCenter.y)+' ';
-				d += 'L '+(nippleTipCenter.x+nippleWidth*0.5)+','+(nippleTipCenter.y)+' ';
-				d += 'L '+(nippleTipCenter.x-nippleWidth*0.5)+','+(nippleTipCenter.y)+' ';
-				d += 'L '+(areolaCenter.x-nippleWidth/2)+','+(areolaCenter.y)+' ';
-				nipplePath.setAttribute('d',d);
+					var nipplePath = document.createElementNS('http://www.w3.org/2000/svg','path');
+					nearBreast.appendChild(nipplePath);
+					var fnl = nippleLength * Math.cos(breastAngle/180*Math.PI);
+					nipplePath.setAttribute('fill',areolaeTone);
+					d = 'M '+(areolaCenter.x+nippleWidth/2)+','+(areolaCenter.y)+' ';
+					d += 'L '+(nippleTipCenter.x+nippleWidth*0.5)+','+(nippleTipCenter.y)+' ';
+					d += 'L '+(nippleTipCenter.x-nippleWidth*0.5)+','+(nippleTipCenter.y)+' ';
+					d += 'L '+(areolaCenter.x-nippleWidth/2)+','+(areolaCenter.y)+' ';
+					nipplePath.setAttribute('d',d);
 
-				var nippleGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
-				nearBreast.appendChild(nippleGroup);
+					var nippleGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
+					nearBreast.appendChild(nippleGroup);
 
-				var nippleTip = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-				nippleGroup.appendChild(nippleTip);
-				nippleTip.setAttribute('fill',areolaeTone);
-				nippleTip.setAttribute('cx',nippleTipCenter.x);
-				nippleTip.setAttribute('cy',nippleTipCenter.y);
-				nippleTip.setAttribute('rx',nippleWidth*0.5);
-				nippleTip.setAttribute('ry',nippleWidth*0.45);
+					var nippleTip = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+					nippleGroup.appendChild(nippleTip);
+					nippleTip.setAttribute('fill',areolaeTone);
+					nippleTip.setAttribute('cx',nippleTipCenter.x);
+					nippleTip.setAttribute('cy',nippleTipCenter.y);
+					nippleTip.setAttribute('rx',nippleWidth*0.5);
+					nippleTip.setAttribute('ry',nippleWidth*0.45);
 				
-				if (this.biometrics.nippleLength>0) {
-					nipplePath.setAttribute('stroke','black');
-					nippleTip.setAttribute('stroke','black');
-				};
+					if (this.biometrics.nippleLength>0) {
+						nipplePath.setAttribute('stroke','black');
+						nippleTip.setAttribute('stroke','black');
+					};
 
-				if (this.biometrics.nippleWidth>2) {
-					var nippleDuct = document.createElementNS('http://www.w3.org/2000/svg','path');
-					nippleGroup.appendChild(nippleDuct);
-					nippleDuct.setAttribute('fill','none');
-					nippleDuct.setAttribute('stroke','black');
-					nippleDuct.setAttribute('stroke-linecap','round');
-					var d = 'M '+(nippleTipCenter.x)+','+(nippleTipCenter.y+nippleWidth*0.2)+' ';
-					d += 'Q '+(nippleTipCenter.x-nippleWidth*0.15)+','+nippleTipCenter.y+' '+nippleTipCenter.x+','+(nippleTipCenter.y-nippleWidth*0.2)+' ';
-					nippleDuct.setAttribute('d',d);
-					nippleDuct.setAttribute('transform','rotate(90 '+nippleTipCenter.x+' '+nippleTipCenter.y+')');
+					if (this.biometrics.nippleWidth>2) {
+						var nippleDuct = document.createElementNS('http://www.w3.org/2000/svg','path');
+						nippleGroup.appendChild(nippleDuct);
+						nippleDuct.setAttribute('fill','none');
+						nippleDuct.setAttribute('stroke','black');
+						nippleDuct.setAttribute('stroke-linecap','round');
+						var d = 'M '+(nippleTipCenter.x)+','+(nippleTipCenter.y+nippleWidth*0.2)+' ';
+						d += 'Q '+(nippleTipCenter.x-nippleWidth*0.15)+','+nippleTipCenter.y+' '+nippleTipCenter.x+','+(nippleTipCenter.y-nippleWidth*0.2)+' ';
+						nippleDuct.setAttribute('d',d);
+						nippleDuct.setAttribute('transform','rotate(90 '+nippleTipCenter.x+' '+nippleTipCenter.y+')');
+					};
 				};
 
 			};
@@ -5330,14 +5346,6 @@ function MorfologyBody(id,sex,roundness,softness) {
 			rect.setAttribute('height',100);
 			shots.appendChild(rect);
 		};
-
-			var rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
-			rect.id = 'shot_farNipple_'+this.id;
-			rect.setAttribute('x',nippleTipTop.x - 50);
-			rect.setAttribute('y',nippleTipTop.y - 50);
-			rect.setAttribute('width',100);
-			rect.setAttribute('height',100);
-			shots.appendChild(rect);
 	
 					
 		return svg;

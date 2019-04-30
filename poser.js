@@ -259,27 +259,7 @@ var model = {
 		var ul = document.createElement('ul');
 		todoDiv.appendChild(ul);
 		
-		var todoList = [
-			'nipples poking out of clothing',
-			'vulva (incl. fupa)',
-			'pants need a speedo without stroke',
-			'separate sleeve and legging clip paths to upper and lower, apply to those groups rather than the svg top layer',
-			'puffy sleeves',
-			'puffy leggings',
-			'puffy skirts',
-			'empire waists (garment.waistHeight)',
-			'shoes',
-			'Export with embedded parameters',
-			'Import parameters embedded in svg',
-			'one leg / one arm / one hand / etc',
-		];
-		for (var item of todoList) {
-			var li = document.createElement('li');
-			li.innerHTML = item;
-			ul.appendChild(li);
-		};
-				
-		return [svgDiv, controlsWrapper, todoDiv];
+		return [svgDiv, controlsWrapper];
 	},
 	
 	addGarment: function() {
